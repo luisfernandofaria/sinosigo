@@ -25,9 +25,13 @@ func Insert(w http.ResponseWriter, r *http.Request) {
 
 		descricao := r.FormValue("descricao")
 		data := r.FormValue("data")
+		imagem := r.FormValue("imagem")
+		autordodano := r.FormValue("autordodano")
+		emailusuario := r.FormValue("emailusuario")
 		categoria := r.FormValue("categoria")
+		LocalAcidente := r.FormValue("localacidente")
 
-		model.CriaNovaDenuncia(descricao, data, categoria)
+		model.CriaNovaDenuncia(descricao, data, imagem, autordodano, emailusuario, categoria, LocalAcidente)
 	}
 	http.Redirect(w, r, "/", 301)
 }
