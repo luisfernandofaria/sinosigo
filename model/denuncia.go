@@ -3,38 +3,39 @@ package model
 import "sinosigorest/database"
 
 type Denuncia struct {
-	ID            int64 `json:"id"`
+	ID            int64          `json:"id"`
 	LocalAcidente *LocalAcidente `json:"localacidente"`
-	Descricao     string `json:"descricao"`
-	Data          string`json:"data"`
-	Foto          string`json:"foto"`
-	AutorDano     string`json:"autordano"`
-	EmailUsuario  string`json:"emailusuario"`
-	Categoria     string`json:"categoria"`
+	Descricao     string         `json:"descricao"`
+	Data          string         `json:"data"`
+	Foto          string         `json:"foto"`
+	AutorDano     string         `json:"autordano"`
+	EmailUsuario  string         `json:"emailusuario"`
+	Categoria     string         `json:"categoria"`
 }
 
 func BuscarDenuncias() []Denuncia {
 	db := database.ConectarComBanco()
 
-	selectDenuncias, err:= db.Query("SELECT id, descricao, datadenuncia, categoria FROM denuncia")
+	selectDenuncias, err := db.Query("SELECT id, descricao, datadenuncia, imagem, autordano, emailusuario, categoria FROM denuncia")
 	if err != nil {
-	panic(err.Error())
+		panic(err.Error())
 	}
 
- 	d:= Denuncia{}
+	d := Denuncia{}
 	denuncias := []Denuncia{}
 
 	for selectDenuncias.Next() {
-	var id int64
-		var descricao, data, categoria string
+		var id int64
+		var descricao, data, autordano, categoria string
 
-		err = selectDenuncias.Scan(&id, &descricao, &data, &categoria)
+		err = selectDenuncias.Scan(&id, &descricao, &data, &autordano, &categoria)
 		if err != nil {
-		panic(err.Error())
+			panic(err.Error())
 		}
 
 		d.Descricao = descricao
 		d.Data = data
+		d.AutorDano = autordano
 		d.Categoria = categoria
 		denuncias = append(denuncias, d)
 	}
